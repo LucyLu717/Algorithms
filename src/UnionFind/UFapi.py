@@ -83,9 +83,9 @@ class WeightedQuickUnion(UF):
         q_sz = self.sz[q_id]
         if p_sz <= q_sz:
             self.id_[p_id] = q_id
-            self.sz[q_id] += 1
+            self.sz[q_id] += p_sz
         else:
             self.id_[q_id] = p_id
-            self.sz[p_id] += 1
+            self.sz[p_id] += q_sz
         self.count_ -= 1
         return
