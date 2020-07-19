@@ -15,7 +15,7 @@ class UF(ABC):
         pass
 
     def connected(self, p, q):
-        return self.id_[p] == self.id_[q]
+        return self.find(p) == self.find(q)
 
 
 class QuickFind(UF):
@@ -23,9 +23,11 @@ class QuickFind(UF):
         super().__init__(N)
 
     def find(self, id):
+        """ constant """
         return self.id_[id]
 
     def union(self, p, q):
+        """ best case: constant, average and worst case: linear """
         p_id = self.find(p)
         q_id = self.find(q)
         if p_id == q_id:
@@ -33,3 +35,23 @@ class QuickFind(UF):
         for i, id in enumerate(self.id_):
             if id == p_id:
                 self.id_[i] = q_id
+
+
+class QuickUnion(UF):
+    def __init__(self, N):
+        super().__init__(N)
+
+    def find(self, id):
+        """ best case: constant, average and worst case: linear """
+        while self.id_[id] != id:
+            id = self.id_[id]
+        return id
+
+    def union(self, p, q):
+        """ best case: constant, average and worst case: linear """
+        p_id = self.find(p)
+        q_id = self.find(q)
+        if p_id != q_id:
+            self.id_[p_id] = q_id
+        return
+
