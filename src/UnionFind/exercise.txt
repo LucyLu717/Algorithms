@@ -1,0 +1,11 @@
+Exercise 1.5.5
+(10^9 * 10^6 * 10 / 10^9) seconds / (3600 * 24 seconds per day) ~ 115 days
+
+Exercise 1.5.6
+2 * log(10^9) * 10^6 / 10^9 < 1 second
+
+Exercise 1.5.8
+id[p] changes to id[q] when i == p; future accessed to id[p] will be different.
+
+Exercise 1.5.9
+Impossible because height of tree (5) is bigger than log(10) < 4. (Proposition H)
