@@ -44,3 +44,30 @@ def test_weightedquickunion():
     assert qf.find(8) == 3
     assert qf.count() == 2
 
+
+def test_quickunion_compression():
+    qf = UFapi.QuickUnion(10, True)
+    nums = reader.read("test.txt")
+    for p, q in nums:
+        qf.union(p, q)
+    # 1 1 1 8 8 1 1 1 8 8
+    assert qf.connected(0, 1)
+    assert qf.connected(4, 9)
+    assert qf.find(6) == 1
+    assert qf.find(2) == 1
+    assert qf.find(8) == 8
+    assert qf.count() == 2
+
+
+def test_weightedquickunion_compression():
+    qf = UFapi.WeightedQuickUnion(10, True)
+    nums = reader.read("test.txt")
+    for p, q in nums:
+        qf.union(p, q)
+    # 1 1 1 3 3 1 1 1 3 3
+    assert qf.connected(0, 1)
+    assert qf.connected(4, 9)
+    assert qf.find(6) == 1
+    assert qf.find(2) == 1
+    assert qf.find(8) == 3
+    assert qf.count() == 2

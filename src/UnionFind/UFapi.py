@@ -43,29 +43,47 @@ class QuickFind(UF):
 
 
 class QuickUnion(UF):
-    def __init__(self, N):
+    def __init__(self, N, compression=False):
         super().__init__(N)
+        self.compression = compression
 
     def find(self, id):
         """ best case: constant, average and worst case: linear """
+        """ compression: log """
         while self.id_[id] != id:
             id = self.id_[id]
         return id
 
     def union(self, p, q):
         """ best case: constant, average and worst case: linear """
+        """ compression: log """
         p_id = self.find(p)
         q_id = self.find(q)
         if p_id != q_id:
+            if self.compression:
+                self.path_compression(p, q, p_id, q_id)
             self.id_[p_id] = q_id
             self.count_ -= 1
         return
 
+    def path_compression(self, p, q, p_id, q_id):
+        """ Exercise 1.5.12 """
+        while self.id_[p] != p_id:
+            idx = self.id_[p]
+            self.id_[p] = q_id
+            p = idx
+        while self.id_[q] != q_id:
+            idx = self.id_[q]
+            self.id_[q] = q_id
+            q = idx
+        return
+
 
 class WeightedQuickUnion(UF):
-    def __init__(self, N):
+    def __init__(self, N, compression=False):
         super().__init__(N)
         self.sz = [1] * self.size_
+        self.compression = compression
 
     def find(self, id):
         """ log N """
@@ -82,10 +100,26 @@ class WeightedQuickUnion(UF):
         p_sz = self.sz[p_id]
         q_sz = self.sz[q_id]
         if p_sz <= q_sz:
+            if self.compression:
+                self.path_compression(p, q, p_id, q_id, q_id)
             self.id_[p_id] = q_id
             self.sz[q_id] += p_sz
         else:
+            if self.compression:
+                self.path_compression(p, q, p_id, q_id, p_id)
             self.id_[q_id] = p_id
             self.sz[p_id] += q_sz
         self.count_ -= 1
+        return
+
+    def path_compression(self, p, q, p_id, q_id, target):
+        """ Exercise 1.5.13 """
+        while self.id_[p] != p_id:
+            idx = self.id_[p]
+            self.id_[p] = target
+            p = idx
+        while self.id_[q] != q_id:
+            idx = self.id_[q]
+            self.id_[q] = target
+            q = idx
         return
