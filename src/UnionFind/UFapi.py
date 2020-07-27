@@ -80,10 +80,12 @@ class QuickUnion(UF):
 
 
 class WeightedQuickUnion(UF):
-    def __init__(self, N, compression=False):
+    def __init__(self, N, compression=False, height=False):
         super().__init__(N)
         self.sz = [1] * self.size_
+        self.hi = [0] * self.size_
         self.compression = compression
+        self.height = height
 
     def find(self, id):
         """ log N """
@@ -97,18 +99,29 @@ class WeightedQuickUnion(UF):
         q_id = self.find(q)
         if p_id == q_id:
             return
-        p_sz = self.sz[p_id]
-        q_sz = self.sz[q_id]
-        if p_sz <= q_sz:
-            if self.compression:
-                self.path_compression(p, q, p_id, q_id, q_id)
-            self.id_[p_id] = q_id
-            self.sz[q_id] += p_sz
+        if self.height:
+            p_hi = self.hi[p_id]
+            q_hi = self.hi[q_id]
+            if p_hi < q_hi:
+                self.id_[p_id] = q_id
+            elif p_hi > q_hi:
+                self.id_[q_id] = p_id
+            else:
+                self.id_[p_id] = q_id
+                self.hi[q_id] += 1
         else:
-            if self.compression:
-                self.path_compression(p, q, p_id, q_id, p_id)
-            self.id_[q_id] = p_id
-            self.sz[p_id] += q_sz
+            p_sz = self.sz[p_id]
+            q_sz = self.sz[q_id]
+            if p_sz <= q_sz:
+                if self.compression:
+                    self.path_compression(p, q, p_id, q_id, q_id)
+                self.id_[p_id] = q_id
+                self.sz[q_id] += p_sz
+            else:
+                if self.compression:
+                    self.path_compression(p, q, p_id, q_id, p_id)
+                self.id_[q_id] = p_id
+                self.sz[p_id] += q_sz
         self.count_ -= 1
         return
 
@@ -123,3 +136,8 @@ class WeightedQuickUnion(UF):
             self.id_[q] = target
             q = idx
         return
+
+    def get_height(self, id):
+        if self.height:
+            return self.hi[self.find(id)]
+        return -1

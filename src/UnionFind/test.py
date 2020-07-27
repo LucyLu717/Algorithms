@@ -71,3 +71,20 @@ def test_weightedquickunion_compression():
     assert qf.find(2) == 1
     assert qf.find(8) == 3
     assert qf.count() == 2
+
+
+def test_weightedquickunion_height():
+    qf = UFapi.WeightedQuickUnion(10, True, True)
+    nums = reader.read("test.txt")
+    for p, q in nums:
+        qf.union(p, q)
+    # 1 1 1 3 3 1 1 1 3 3
+    assert qf.connected(0, 1)
+    assert qf.connected(4, 9)
+    assert qf.find(6) == 1
+    assert qf.find(2) == 1
+    assert qf.find(8) == 3
+    assert qf.count() == 2
+    assert qf.get_height(3) == 1
+    assert qf.get_height(1) == 2
+    assert qf.get_height(2) == 2
