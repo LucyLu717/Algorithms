@@ -1,4 +1,6 @@
 # user files
+plots/
+*.txt
 
 # Text editor
 .vscode/
