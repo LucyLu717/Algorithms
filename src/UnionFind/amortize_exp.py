@@ -1,9 +1,15 @@
 """ Exercise 1.5.16 """
 import random
 import subprocess
-import UFapi
-import reader
 import matplotlib.pyplot as plt
+
+import os, sys
+
+sys.path.append(os.path.dirname("./"))
+sys.path.append(os.path.dirname("../utils"))
+
+import UFapi
+from utils import reader
 
 
 def getUFModel(N, model):
@@ -44,7 +50,16 @@ def run(path, N, model_str):
 
 
 subprocess.run(
-    ["python", "data_generator.py", "-p", "mediumUF.txt", "-n", "625", "-e", "900",]
+    [
+        "python",
+        "utils/data_generator.py",
+        "-p",
+        "mediumUF.txt",
+        "-n",
+        "625",
+        "-e",
+        "900",
+    ]
 )
 for model in ["qfind", "qunion", "weighted"]:
     run("mediumUF.txt", 625, model)

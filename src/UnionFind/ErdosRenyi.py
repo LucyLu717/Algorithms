@@ -3,6 +3,10 @@ import random
 import argparse
 import UFapi
 
+import os, sys
+
+sys.path.append(os.path.dirname("./"))
+
 
 def count(args):
     model = getUFModel(args.nodes, args.model)

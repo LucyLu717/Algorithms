@@ -1,11 +1,18 @@
 import pytest
+import os, sys
+
+sys.path.append(os.path.dirname("./"))
+sys.path.append(os.path.dirname("../utils"))
+
 import UFapi
-import reader
+from utils import reader
+
+PATH = "tests/test.txt"
 
 
 def test_quickfind():
     qf = UFapi.QuickFind(10)
-    nums = reader.read("test.txt")
+    nums = reader.read(PATH)
     for p, q in nums:
         qf.union(p, q)
     # 1 1 1 8 8 1 1 1 8 8
@@ -19,7 +26,7 @@ def test_quickfind():
 
 def test_quickunion():
     qf = UFapi.QuickUnion(10)
-    nums = reader.read("test.txt")
+    nums = reader.read(PATH)
     for p, q in nums:
         qf.union(p, q)
     # 1 1 1 8 8 1 1 1 8 8
@@ -33,7 +40,7 @@ def test_quickunion():
 
 def test_weightedquickunion():
     qf = UFapi.WeightedQuickUnion(10)
-    nums = reader.read("test.txt")
+    nums = reader.read(PATH)
     for p, q in nums:
         qf.union(p, q)
     # 1 1 1 3 3 1 1 1 3 3
@@ -47,7 +54,7 @@ def test_weightedquickunion():
 
 def test_quickunion_compression():
     qf = UFapi.QuickUnion(10, True)
-    nums = reader.read("test.txt")
+    nums = reader.read(PATH)
     for p, q in nums:
         qf.union(p, q)
     # 1 1 1 8 8 1 1 1 8 8
@@ -61,7 +68,7 @@ def test_quickunion_compression():
 
 def test_weightedquickunion_compression():
     qf = UFapi.WeightedQuickUnion(10, True)
-    nums = reader.read("test.txt")
+    nums = reader.read(PATH)
     for p, q in nums:
         qf.union(p, q)
     # 1 1 1 3 3 1 1 1 3 3
@@ -75,7 +82,7 @@ def test_weightedquickunion_compression():
 
 def test_weightedquickunion_height():
     qf = UFapi.WeightedQuickUnion(10, True, True)
-    nums = reader.read("test.txt")
+    nums = reader.read(PATH)
     for p, q in nums:
         qf.union(p, q)
     # 1 1 1 3 3 1 1 1 3 3
