@@ -35,3 +35,7 @@ See [code](ErdosRenyi.py).
 
 ### Exercise 1.5.18 and 1.5.19
 See [attempted code](attempts/).
+Resource: [animation](https://towardsdatascience.com/intro-to-dynamic-visualization-with-python-animations-and-interactive-plots-f72a7fb69245)
+
+### Exercise 1.5.21
+See [code](ErdosRenyi.py).

@@ -2,20 +2,35 @@
 import random
 import argparse
 import UFapi
-
+from math import log
 import os, sys
 
 sys.path.append(os.path.dirname("./"))
 
 
-def count(args):
-    model = getUFModel(args.nodes, args.model)
-    random.seed(args.seed)
-    for i in range(args.edges):
-        p = random.randint(0, args.nodes - 1)
-        q = random.randint(0, args.nodes - 1)
+def count(nodes, edges, model, seed):
+    model = getUFModel(nodes, model)
+    if seed != -1:
+        random.seed(seed)
+    for i in range(edges):
+        p = random.randint(0, nodes - 1)
+        q = random.randint(0, nodes - 1)
         model.union(p, q)
     return model.count()
+
+
+# Exercise 1.5.21
+def all_connected(nodes, model, seed):
+    model = getUFModel(nodes, model)
+    if seed != -1:
+        random.seed(seed)
+    connections = 0
+    while model.count() != 1:
+        p = random.randint(0, nodes - 1)
+        q = random.randint(0, nodes - 1)
+        model.union(p, q)
+        connections += 1
+    return connections
 
 
 def getUFModel(N, model):
@@ -46,7 +61,7 @@ parser.add_argument(
     "-s",
     "--seed",
     type=int,
-    default=0,
+    default=-1,
     help="seed for random number generator; default = 0",
 )
 parser.add_argument(
@@ -57,4 +72,12 @@ parser.add_argument(
     help="Union find model; choices are qfind, qunion, qunion-compression, weighted, weighted-compression, weighted-height; default = weighted quick union",
 )
 args = parser.parse_args()
-print(count(args))
+print(count(args.nodes, args.edges, args.model, args.seed))
+
+# Exercise 1.5.21
+diff = []
+for n in range(1, args.nodes + 1):
+    hypothesis = n * log(n) / 2
+    connections = all_connected(n, args.model, args.seed)
+    diff.append(connections - hypothesis)
+print(float(sum(diff)) / max(len(diff), 1))
