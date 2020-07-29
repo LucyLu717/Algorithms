@@ -42,9 +42,12 @@ def run(path, N, model_str):
         total_res.append(total / (i + 1))
         cost_res.append(cost)
     index = [i + 1 for i in range(len(edges))]
-    # TODO: control scale, add labels, title and legend
-    plt.scatter(index, total_res, c="red", s=0.1)
-    plt.scatter(index, cost_res, c="gray", s=0.1)
+    plt.xlim(right=900)
+    plt.ylim(top=1200)
+    plt.scatter(index, total_res, c="red", s=0.1, label="Connections")
+    plt.scatter(index, cost_res, c="gray", s=0.1, label="Accesses")
+    plt.legend(loc="upper right")
+    plt.title(f"{model_str} 625/900 amortized")
     plt.savefig(f"plots/{model_str}_625_900_amortized.png")
     plt.close()
 

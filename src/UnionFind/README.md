@@ -32,3 +32,6 @@ See [code](amortize_exp.py).
 
 ### Exercise 1.5.17
 See [code](ErdosRenyi.py).
+
+### Exercise 1.5.18 and 1.5.19
+See [attempted code](attempts/).
